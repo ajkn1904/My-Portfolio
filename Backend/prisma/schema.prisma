@@ -23,3 +23,26 @@ model User {
   role      String   @default("USER")
   createdAt DateTime @default(now())
 }
+
+
+
+model AdminInfo {
+  id            Int      @id @default(1)
+  name          String   @default("Anika Jumana Khanam Nishat")
+  email         String   @default("ajknishat@gmail.com")
+  officialEmail String   @default("anika.nishat06@gmail.com")
+  contact       String   @default("+8801521228030")
+  photoUrl      String?
+  address       String   @default("Chattogram, Bangladesh")
+  education     String   @default("BSc. in Computer Science & Engineering")
+  cgpa          Float    @default(3.96)
+  github        String   @default("https://github.com/ajkn1904")
+  linkedin      String   @default("https://www.linkedin.com/in/anika-jumana-khanam/")
+  stackoverflow String   @default("https://stackoverflow.com/users/19951395/ajkn")
+
+  experiences   Json?
+  skills        Json?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
