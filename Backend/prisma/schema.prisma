@@ -34,7 +34,8 @@ model AdminInfo {
   contact       String   @default("+8801521228030")
   photoUrl      String?
   address       String   @default("Chattogram, Bangladesh")
-  education     String   @default("BSc. in Computer Science & Engineering")
+  institution   String @default("Premier University, Chittagong, Bangladesh")
+  degree        String   @default("BSc. in Computer Science and Engineering")
   cgpa          Float    @default(3.96)
   github        String   @default("https://github.com/ajkn1904")
   linkedin      String   @default("https://www.linkedin.com/in/anika-jumana-khanam/")
@@ -45,4 +46,45 @@ model AdminInfo {
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+
+
+
+// Project Details model
+model Project {
+  id          Int           @id @default(autoincrement())
+  name        String
+  img         String
+  liveLink    String
+  githubLink  String
+  intro       String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  techStacks  TechStack[]
+  details     ProjectDetail[]
+  uiImages    UiImage[]
+}
+
+model TechStack {
+  id        Int      @id @default(autoincrement())
+  name      String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
+}
+
+model ProjectDetail {
+  id        Int      @id @default(autoincrement())
+  text      String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
+}
+
+model UiImage {
+  id        Int      @id @default(autoincrement())
+  imgId     Int
+  value     String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
 }

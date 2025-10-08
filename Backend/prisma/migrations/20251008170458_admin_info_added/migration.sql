@@ -1,4 +1,16 @@
 -- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT 'USER',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "AdminInfo" (
     "id" INTEGER NOT NULL DEFAULT 1,
     "name" TEXT NOT NULL DEFAULT 'Anika Jumana Khanam Nishat',
@@ -7,7 +19,8 @@ CREATE TABLE "AdminInfo" (
     "contact" TEXT NOT NULL DEFAULT '+8801521228030',
     "photoUrl" TEXT,
     "address" TEXT NOT NULL DEFAULT 'Chattogram, Bangladesh',
-    "education" TEXT NOT NULL DEFAULT 'BSc. in Computer Science & Engineering',
+    "institution" TEXT NOT NULL DEFAULT 'Premier University, Chittagong, Bangladesh',
+    "degree" TEXT NOT NULL DEFAULT 'BSc. in Computer Science and Engineering',
     "cgpa" DOUBLE PRECISION NOT NULL DEFAULT 3.96,
     "github" TEXT NOT NULL DEFAULT 'https://github.com/ajkn1904',
     "linkedin" TEXT NOT NULL DEFAULT 'https://www.linkedin.com/in/anika-jumana-khanam/',
@@ -19,3 +32,8 @@ CREATE TABLE "AdminInfo" (
 
     CONSTRAINT "AdminInfo_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+
