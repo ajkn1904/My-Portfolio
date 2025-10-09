@@ -54,7 +54,6 @@ const updateAdminInfo = async (
       github: payload.github ?? adminInfo.github,
       linkedin: payload.linkedin ?? adminInfo.linkedin,
       stackoverflow: payload.stackoverflow ?? adminInfo.stackoverflow,
-      // ✅ Correctly cast JSON fields
       experiences: payload.experiences
         ? (payload.experiences as unknown as InputJsonValue)
         : (adminInfo.experiences) ?? undefined,
