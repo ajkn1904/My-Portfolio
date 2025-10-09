@@ -1,13 +1,18 @@
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../errorHelper/AppError";
 import { prisma } from "../../../config/db";
-import { IAdminInfo, IAdminInfoUpdatePayload, IExperience, ISkill } from "./admin.interface";
-import { JsonValue } from "../../../generated/prisma/runtime/library";
+import {
+  IAdminInfo,
+  IAdminInfoUpdatePayload,
+  IExperience,
+  ISkill,
+} from "./admin.interface";
+import { InputJsonValue } from "@prisma/client/runtime/library";
 
 // Get admin info
 const getAdminInfo = async (): Promise<IAdminInfo> => {
   const adminInfo = await prisma.adminInfo.findUnique({
-    where: { id: 1 }
+    where: { id: 1 },
   });
 
   if (!adminInfo) {
@@ -17,16 +22,17 @@ const getAdminInfo = async (): Promise<IAdminInfo> => {
   return {
     ...adminInfo,
     experiences: adminInfo.experiences as IExperience[] | null,
-    skills: adminInfo.skills as ISkill[] | null
+    skills: adminInfo.skills as ISkill[] | null,
   };
 };
 
 // Update admin info
+
 const updateAdminInfo = async (
   payload: IAdminInfoUpdatePayload
 ): Promise<IAdminInfo> => {
   const adminInfo = await prisma.adminInfo.findUnique({
-    where: { id: 1 }
+    where: { id: 1 },
   });
 
   if (!adminInfo) {
@@ -48,19 +54,24 @@ const updateAdminInfo = async (
       github: payload.github ?? adminInfo.github,
       linkedin: payload.linkedin ?? adminInfo.linkedin,
       stackoverflow: payload.stackoverflow ?? adminInfo.stackoverflow,
-      experiences: payload.experiences ?? adminInfo.experiences,
-      skills: payload.skills ?? adminInfo.skills
-    }
+      // ✅ Correctly cast JSON fields
+      experiences: payload.experiences
+        ? (payload.experiences as unknown as InputJsonValue)
+        : (adminInfo.experiences) ?? undefined,
+      skills: payload.skills
+        ? (payload.skills as unknown as InputJsonValue)
+        : (adminInfo.skills) ?? undefined,
+    },
   });
 
   return {
     ...updatedInfo,
     experiences: updatedInfo.experiences as IExperience[] | null,
-    skills: updatedInfo.skills as ISkill[] | null
+    skills: updatedInfo.skills as ISkill[] | null,
   };
 };
 
 export const AdminService = {
   getAdminInfo,
-  updateAdminInfo
+  updateAdminInfo,
 };
