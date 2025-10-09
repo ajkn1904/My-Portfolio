@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+}
+
+
+
+model AdminInfo {
+  id            Int      @id @default(1)
+  name          String   @default("Anika Jumana Khanam Nishat")
+  email         String   @default("ajknishat@gmail.com")
+  officialEmail String   @default("anika.nishat06@gmail.com")
+  contact       String   @default("+8801521228030")
+  photoUrl      String?
+  address       String   @default("Chattogram, Bangladesh")
+  institution   String @default("Premier University, Chittagong, Bangladesh")
+  degree        String   @default("BSc. in Computer Science and Engineering")
+  cgpa          Float    @default(3.96)
+  github        String   @default("https://github.com/ajkn1904")
+  linkedin      String   @default("https://www.linkedin.com/in/anika-jumana-khanam/")
+  stackoverflow String   @default("https://stackoverflow.com/users/19951395/ajkn")
+
+  experiences   Json?
+  skills        Json?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+
+
+
+// Project Details model
+model Project {
+  id          Int           @id @default(autoincrement())
+  name        String
+  img         String
+  liveLink    String
+  githubLink  String
+  intro       String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  techStacks  TechStack[]
+  details     ProjectDetail[]
+  uiImages    UiImage[]
+}
+
+model TechStack {
+  id        Int      @id @default(autoincrement())
+  name      String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
+}
+
+model ProjectDetail {
+  id        Int      @id @default(autoincrement())
+  text      String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
+}
+
+model UiImage {
+  id        Int      @id @default(autoincrement())
+  value     String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
+}
+
+
+model Blog {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  thumbnail  String?
+  isFeatured Boolean  @default(false)
+  tags       String[]
+  views      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
