@@ -87,3 +87,16 @@ model UiImage {
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId Int
 }
+
+
+model Blog {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  thumbnail  String?
+  isFeatured Boolean  @default(false)
+  tags       String[]
+  views      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
