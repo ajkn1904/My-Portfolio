@@ -7,8 +7,8 @@ import { Role } from "../../interfaces/Role";
 const router = Router();
 
 router.post("/", checkAuth(Role.admin), projectController.createProject);
-router.get("/", checkAuth(Role.admin), projectController.getAllProjects);
-router.get("/:id", checkAuth(Role.admin), projectController.getSingleProject);
+router.get("/", projectController.getAllProjects);
+router.get("/:id", projectController.getSingleProject);
 router.patch("/:id", checkAuth(Role.admin), projectController.updateProject);
 router.delete("/:id", checkAuth(Role.admin), projectController.deleteProject);
 

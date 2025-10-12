@@ -8,9 +8,9 @@ const router = Router();
 
 
 
-router.get("/", checkAuth(Role.admin), BlogController.getAllBlogs);
+router.get("/", BlogController.getAllBlogs);
 router.post("/", checkAuth(Role.admin), BlogController.createBlog)
-router.get("/:id", checkAuth(Role.admin), BlogController.getBlogById);
+router.get("/:id", BlogController.getBlogById);
 router.patch("/:id", checkAuth(Role.admin), BlogController.updateBlog);
 router.delete("/:id", checkAuth(Role.admin), BlogController.deleteBlog);
 
