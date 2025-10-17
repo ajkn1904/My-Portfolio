@@ -1,6 +1,6 @@
+import Image from "next/image";
 
 
 export const Logo = () => (
-  <h1 className="rounded-full"
-  >Logo</h1>
+  <Image width={40} height={40} src="/logo.jpg" alt="Company Logo"></Image>
 );

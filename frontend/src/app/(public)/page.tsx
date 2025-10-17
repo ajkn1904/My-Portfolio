@@ -1,11 +1,13 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import HeroSection from "@/components/modules/Home/Hero";
 
-const HomePage = () => {
+
+export default async function HomePage() {
+
   return (
     <div>
-      <h1>Hello World</h1>
+      <HeroSection />
+      
     </div>
   );
-};
-
-export default HomePage;
+}

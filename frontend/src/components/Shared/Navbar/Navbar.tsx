@@ -18,18 +18,18 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <NavMenu className="hidden md:flex flex-col items-center" />
       </div>
+      {/* Bottom Icon (Settings or Social) */}
+      {/* <div className="flex flex-col items-center">
+        <button className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 transition flex items-center justify-center text-sm">
+          Login
+        </button>
+      </div> */}
 
       {/* Mobile Menu Trigger */}
       <div className="md:hidden">
         <NavigationSheet />
       </div>
 
-      {/* Bottom Icon (Settings or Social) */}
-      <div className="flex flex-col items-center">
-        <button className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 transition flex items-center justify-center text-sm">
-          ⚙️
-        </button>
-      </div>
     </nav>
   );
 };
