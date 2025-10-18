@@ -6,32 +6,36 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { NavigationMenuProps } from "@radix-ui/react-navigation-menu";
+import { ModeToggle } from "./modeToggler";
 
 const menuItems = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/" },
-  { name: "Skills", href: "/" },
-  { name: "Projects", href: "/" },
-  { name: "Contact", href: "/" },
-  { name: "Blog", href: "/blogs" },
-  { name: "Login", href: "/login" },
+  { name: "HOME", href: "/" },
+  { name: "ABOUT", href: "/" },
+  { name: "SKILLS", href: "/" },
+  { name: "PROJECTS", href: "/" },
+  { name: "CONTACT", href: "/" },
+  { name: "BLOG", href: "/blogs" },
+  { name: "LOGIN", href: "/login" },
 ];
 
 export const NavMenu = (props: NavigationMenuProps) => (
   <NavigationMenu {...props}>
-    <NavigationMenuList className="flex flex-col gap-8 items-center justify-center font-medium">
+    <NavigationMenuList className="flex flex-col gap-8 -mt-40 md:mt-0 font-medium">
       {menuItems.map((item) => (
         <NavigationMenuItem key={item.name}>
           <NavigationMenuLink asChild>
             <Link
               href={item.href}
-              className="text-gray-700 hover:text-purple-500 transition-all text-sm tracking-wide"
+              className="ml-4 md:ml-0 w-20 hover:text-white dark:text-foreground hover:bg-primary transition-all text-sm tracking-wide"
             >
               {item.name}
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
       ))}
+      <div className="absolute -bottom-30 dark:text-foreground hover:bg-primary rounded-full"> 
+        <ModeToggle/>
+      </div>
     </NavigationMenuList>
   </NavigationMenu>
 );
