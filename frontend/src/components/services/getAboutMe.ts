@@ -1,5 +1,3 @@
-// src/lib/about.ts
-
 export interface Experience {
   post: string;
   company: string;
@@ -31,12 +29,12 @@ export interface Profile {
 
 // SSG fetch function
 export async function getProfileData(): Promise<Profile> {
-  const res = await fetch("http://localhost:5000/api/admin/", {
-    next: { revalidate: 60 }, // SSG with revalidate every 60s
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/admin/`, {
+    next: { revalidate: 2592000 }, // SSG with revalidate every 30 days 
   });
 
   if (!res.ok) throw new Error("Failed to fetch profile data");
 
   const data = await res.json();
-  return data.data; // assuming API returns { data: Profile }
+  return data.data;
 }

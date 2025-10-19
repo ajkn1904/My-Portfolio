@@ -10,10 +10,10 @@ import { ModeToggle } from "./modeToggler";
 
 const menuItems = [
   { name: "HOME", href: "/" },
-  { name: "ABOUT", href: "/" },
-  { name: "SKILLS", href: "/" },
-  { name: "PROJECTS", href: "/" },
-  { name: "CONTACT", href: "/" },
+  { name: "ABOUT", href: "#about" },
+  { name: "SKILLS", href: "#skills" },
+  { name: "PROJECTS", href: "#projects" },
+  { name: "CONTACT", href: "#contact" },
   { name: "BLOG", href: "/blogs" },
   { name: "LOGIN", href: "/login" },
 ];
