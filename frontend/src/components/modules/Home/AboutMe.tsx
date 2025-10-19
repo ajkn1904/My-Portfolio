@@ -93,7 +93,8 @@ export default function AboutMe({ profile }: AboutMeProps) {
         </div>
       </motion.div>
 
-      
+      {/* Skills */}
+      <Skills skills={profile.skills as Skill[]} />
     </motion.section>
   );
 }
