@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Titillium_Web } from "next/font/google";
+import { Titillium_Web } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "react-hot-toast";
 
-
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const titilliumWeb = Titillium_Web({
   weight: "400",
@@ -35,6 +29,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Toaster />
              {children}
           </ThemeProvider>
         
