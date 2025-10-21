@@ -1,9 +1,11 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { NavMenu } from "./nav-menu";
-import Link from "next/link";
 import { Logo } from "./logo";
+import Link from "next/link";
 
 export const NavigationSheet = () => {
   return (
@@ -13,12 +15,12 @@ export const NavigationSheet = () => {
           <Menu />
         </Button>
       </SheetTrigger>
-      <SheetContent>
-        <Link href="/" className="mx-4 mt-2">
-          <Logo
-          />
+      <SheetContent className="flex flex-col">
+        <Link href="/" className="mx-4 mt-2 -mb-32">
+          <Logo />
         </Link>
-        <NavMenu orientation="vertical" className="mt-12" />
+
+        <NavMenu className="mt-4"/>
       </SheetContent>
     </Sheet>
   );

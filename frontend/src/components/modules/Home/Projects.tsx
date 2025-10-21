@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { Github, ExternalLink } from "lucide-react";
 import { getProjects } from "@/components/services/getProjects";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Project } from "@/components/types";
+import ShowMoreButton from "@/components/ui/ShowMoreButton";
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -17,12 +17,12 @@ export default function Projects() {
     getProjects().then(setProjects).catch(console.error);
   }, []);
 
-  if (!projects.length)
-    return (
-      <div className="flex justify-center items-center h-40 text-purple-400 font-semibold">
-        Loading Projects...
-      </div>
-    );
+//   if (!projects.length)
+//     return (
+//       <div className="flex justify-center items-center h-40 text-purple-400 font-semibold">
+//         Loading Projects...
+//       </div>
+//     );
 
   const featuredProjects = projects.slice(0, 3);
 
@@ -35,7 +35,7 @@ export default function Projects() {
       viewport={{ once: true }}
       className="max-w-6xl mx-auto px-6 py-20"
     >
-      <h2 className="text-3xl font-semibold text-purple-600 mb-6 text-center">
+      <h2 className="text-3xl font-semibold text-purple-600 mb-10">
         Featured Projects
       </h2>
 
@@ -116,9 +116,7 @@ export default function Projects() {
      
       <div className="flex justify-center">
         <Link href="/projects">
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-8 py-2 text-lg transition-all duration-300 hover:shadow-md shadow-purple-700">
-            Show More
-          </Button>
+          <ShowMoreButton/>
         </Link>
       </div>
     </motion.section>

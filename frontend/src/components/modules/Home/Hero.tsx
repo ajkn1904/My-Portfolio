@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
 import { motion } from "framer-motion";
 import { Mail, Phone } from "lucide-react";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -38,7 +39,8 @@ export default function HeroSection() {
               deleteSpeed={50}
               delaySpeed={1000}
               words={[
-                "Software Engineer",
+                "Computer Engineer",
+                "Software Developer",
                 "Web Developer",
                 "MERN Stack Developer",
               ]}
@@ -49,14 +51,16 @@ export default function HeroSection() {
           </p>
         </motion.div>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-gray-800 text-white font-semibold px-6 py-3 rounded-full hover:bg-primary transition"
-        >
-          👇 More About Me
-        </motion.button>
-
+        <Link href="#about">
+          <motion.button
+            id="about"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-primary transition"
+          >
+            👇 More About Me
+          </motion.button>
+        </Link>
         {/* Contact Info */}
         <div className="pt-8 grid md:grid-cols-2 justify-between gap-2 text-sm">
           <a

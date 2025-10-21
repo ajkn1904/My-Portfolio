@@ -4,7 +4,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Skills, { Skill } from "./Skills";
-import { Profile } from "@/components/services/getAboutMe";
 import {
   Stepper,
   StepperItem,
@@ -13,6 +12,7 @@ import {
   StepperDescription,
   StepperSeparator,
 } from "@/components/ui/stepper";
+import { Profile } from "@/components/types";
 
 interface AboutMeProps {
   profile: Profile;
@@ -35,7 +35,7 @@ export default function AboutMe({ profile }: AboutMeProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="max-w-6xl mx-auto px-6 py-12"
+      className="max-w-6xl mx-auto px-6 py-20"
     >
       {/* Header */}
       <h2 className="text-3xl font-semibold text-purple-600 mb-6">About Me</h2>
@@ -49,7 +49,7 @@ export default function AboutMe({ profile }: AboutMeProps) {
           <Image
             src={profile.photoUrl}
             alt={profile.name}
-            width={200}
+            width={300}
             height={200}
             className="rounded-full shadow-lg border-4 border-purple-500"
           />
@@ -97,7 +97,7 @@ export default function AboutMe({ profile }: AboutMeProps) {
 
 
       {/* Experience */} 
-      <h2 className="text-3xl font-semibold text-purple-600 mb-6">Professional Experience</h2>
+      <h2 className="text-3xl font-semibold text-purple-600 pt-20 mb-6">Professional Experience</h2>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}

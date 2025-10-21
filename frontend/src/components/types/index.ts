@@ -1,3 +1,33 @@
+//about me
+export interface Experience {
+  post: string;
+  company: string;
+  duration: string;
+  location: string;
+}
+
+export interface Skill {
+  name: string;
+  level: string;
+}
+
+export interface Profile {
+  name: string;
+  email: string;
+  officialEmail: string;
+  contact: string;
+  photoUrl: string;
+  address: string;
+  institution: string;
+  degree: string;
+  cgpa: number;
+  github: string;
+  linkedin: string;
+  stackoverflow: string;
+  experiences: Experience[];
+  skills: Skill[];
+}
+
 //project
 export interface TechStack {
   id: number;

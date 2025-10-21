@@ -48,7 +48,8 @@ export default function ProjectImageGallery({ uiImages, projectName, git, live }
                 <Link href={git} target="_blank" className="flex items-center gap-3 border border-purple-500 px-6 py-3 rounded-full text-white dark:text-purple-300 bg-primary dark:bg-gray-900 hover:bg-accent dark:hover:bg-purple-600/20 text-purple-700 hover:text-black dark:hover:text-white transition-all duration-300 hover:shadow-lg">
                     <Github className="w-5 h-5" /> Code Repository
                 </Link>
-                <Link href={live} target="_blank" className="flex items-center gap-3 border border-blue-500 px-6 py-3 rounded-full text-white dark:text-blue-500 bg-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600/20 hover:text-black dark:hover:text-white transition-all duration-300 hover:shadow-lg">
+                <Link href={live} target="_blank" className="flex items-center gap-3 border border-blue-500 px-6 py-3 rounded-full text-white dark:text-blue-500 bg-blue-500 dark:bg-gray-900 
+                hover:bg-blue-500/30 dark:hover:bg-blue-600/20 hover:text-black dark:hover:text-white transition-all duration-300 hover:shadow-lg">
                     <ExternalLink className="w-5 h-5" /> Live Demo
                 </Link>
             </div>
