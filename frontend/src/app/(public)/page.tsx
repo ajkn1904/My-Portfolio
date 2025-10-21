@@ -2,6 +2,7 @@
 import AboutMe from "@/components/modules/Home/AboutMe";
 import ContactMe from "@/components/modules/Home/ContactMe";
 import HeroSection from "@/components/modules/Home/Hero";
+import Projects from "@/components/modules/Home/Projects";
 import { getProfileData } from "@/components/services/getAboutMe";
 
 
@@ -13,6 +14,7 @@ export default async function HomePage() {
     <div>
       <HeroSection />
       <AboutMe profile={profile}/>
+      <Projects/>
       <ContactMe/>
     </div>
   );

@@ -3,6 +3,8 @@ import { Titillium_Web } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "react-hot-toast";
+import "react-photo-view/dist/react-photo-view.css";
+
 
 
 const titilliumWeb = Titillium_Web({
