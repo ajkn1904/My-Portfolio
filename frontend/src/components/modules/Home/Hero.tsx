@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="relative -mt-4 md:mt-0 md:-ml-2 py-20 lg:container flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 h-screen pr-0 lg:pl-[10%] overflow-hidden text-white lg:text-foreground">
+    <section id="home" className="relative -mt-4 md:mt-0 md:-ml-2 py-20 lg:container flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 h-screen pr-0 lg:pl-[10%] overflow-hidden text-white lg:text-foreground">
       {/* Left Section */}
       <div className="max-w-lg bg-purple-500/40 dark:bg-purple-700/40 lg:bg-purple-50/0  dark:lg:bg-background p-5 space-y-2 z-10">
         <p className="text-lg">👋 Hi There,</p>
@@ -53,7 +53,6 @@ export default function HeroSection() {
 
         <Link href="#about">
           <motion.button
-            id="about"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-primary text-white font-semibold px-6 py-3 rounded-full hover:bg-primary transition"

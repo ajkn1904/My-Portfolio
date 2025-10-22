@@ -122,6 +122,13 @@ export function ProjectsGrid({ projects }: { projects: Project[] }) {
           </motion.div>
         ))}
       </div>
+
+        {/* Back Button */}
+        <div className="flex justify-center mt-16">
+            <Link href="/" className="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-full text-white font-medium transition-all duration-300 shadow-md hover:shadow-purple-700/50">
+                ← Back to Home
+            </Link>
+        </div>
     </motion.section>
   );
 }
