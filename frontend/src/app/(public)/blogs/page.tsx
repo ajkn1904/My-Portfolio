@@ -1,7 +1,8 @@
-export default function BlogPage() {
-  return (
-    <div>
-      <h1>This is page component</h1>
-    </div>
-  );
+import BlogCard from "@/components/modules/blogs/BlogCard";
+import { getAllBlogs } from "@/components/services/getAllBlogs";
+
+
+export default async function BlogsPage() {
+  const blogs = await getAllBlogs();
+  return <BlogCard blogs={blogs} />;
 }
