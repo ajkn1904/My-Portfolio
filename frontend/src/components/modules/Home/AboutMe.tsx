@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+"use client"
+
 
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -34,7 +35,7 @@ export default function AboutMe({ profile }: AboutMeProps) {
     id="about"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.9, ease: "easeInOut"  }}
       className="max-w-6xl mx-auto px-6 py-20"
     >
       {/* Header */}
@@ -44,7 +45,7 @@ export default function AboutMe({ profile }: AboutMeProps) {
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
         >
           <Image
             src={profile.photoUrl}
@@ -58,7 +59,8 @@ export default function AboutMe({ profile }: AboutMeProps) {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.4 }}
+          
         >
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-500 to-indigo-500 bg-clip-text text-transparent">
             {profile.name}
@@ -76,20 +78,20 @@ export default function AboutMe({ profile }: AboutMeProps) {
           <div className="mt-4 text-sm text-gray-700 dark:text-muted-foreground space-y-1">
             <p className="flex gap-1">
               <strong>Email:</strong>
-              <a href={`mailto:${profile.officialEmail}`} className="flex items-center gap-2 transition hover:font-semibold hover:underline hover:text-primary">{profile.officialEmail}</a>
+              <a href={`mailto:${profile.officialEmail}`} className="flex items-center gap-2 transition hover:font-semibold hover:underline hover:text-primary dark:hover:text-purple-500">{profile.officialEmail}</a>
             </p>
 
             <p className="flex gap-1">
               <strong>Contact:</strong> 
-              <a href={`tel:${profile.contact}`} className="flex items-center gap-2 transition hover:font-semibold hover:underline hover:text-primary">{profile.contact}</a>
+              <a href={`tel:${profile.contact}`} className="flex items-center gap-2 transition hover:font-semibold hover:underline hover:text-primary dark:hover:text-purple-500">{profile.contact}</a>
             </p>
             <p><strong>Address:</strong> {profile.address}</p>
           </div>
 
           <div className="flex gap-4 mt-4">
-            <a href={profile.github} target="_blank" className="text-purple-600 hover:text-purple-800 font-medium">GitHub</a>
-            <a href={profile.linkedin} target="_blank" className="text-purple-600 hover:text-purple-800 font-medium">LinkedIn</a>
-            <a href={profile.stackoverflow} target="_blank" className="text-purple-600 hover:text-purple-800 font-medium">Stack Overflow</a>
+            <a href={profile.github} target="_blank" className="text-primary dark:text-purple-600 hover:underline hover:text-purple-700 dark:hover:text-purple-300 font-medium">GitHub</a>
+            <a href={profile.linkedin} target="_blank" className="text-primary dark:text-purple-600 hover:underline hover:text-purple-700 dark:hover:text-purple-300 font-medium">LinkedIn</a>
+            <a href={profile.stackoverflow} target="_blank" className="text-primary dark:text-purple-600 hover:underline hover:text-purple-700 dark:hover:text-purple-300 font-medium">Stack Overflow</a>
           </div>
 
         </motion.div>
@@ -102,7 +104,6 @@ export default function AboutMe({ profile }: AboutMeProps) {
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
         className="max-w-2xl mx-auto my-10 space-y-8"
       >
         <p className="lg:ml-6 my-5 text-gray-700 dark:text-muted-foreground  leading-relaxed w-full text-justify">

@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -46,22 +46,22 @@ export const NavMenu = ({ className, onLinkClick }: NavMenuProps) => {
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el);
 
-const handleScroll = () => {
-  if (isScrollingRef.current) return;
+    const handleScroll = () => {
+      if (isScrollingRef.current) return;
 
-  const viewportHeight = window.innerHeight;
-  let currentSection = "home";
+      const viewportHeight = window.innerHeight;
+      let currentSection = "home";
 
-  sections.forEach((section) => {
-    const rect = section.getBoundingClientRect();
-    // Activate when section top crosses 50% of viewport
-    if (rect.top <= viewportHeight / 2) {
-      currentSection = section.id;
-    }
-  });
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        // Activate when section top crosses 50% of viewport
+        if (rect.top <= viewportHeight / 2) {
+          currentSection = section.id;
+        }
+      });
 
-  setActiveSection(currentSection);
-};
+      setActiveSection(currentSection);
+    };
 
 
 
@@ -99,9 +99,25 @@ const handleScroll = () => {
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/" && activeSection === "home";
-    if (href.startsWith("#")) return pathname === "/" && activeSection === href.replace("#", "");
+
+    if (href.startsWith("#")) {
+      const section = href.replace("#", "");
+
+      // Active if the section is "projects" and current page is /projects
+      return (
+        (pathname === "/" && activeSection === section) ||
+        (section === "projects" && pathname === "/projects")
+      );
+    }
+
+
+    if (href === "/projects") {
+      return pathname === "/projects" || activeSection === "projects";
+    }
+
     return pathname === href;
   };
+
 
   return (
     <NavigationMenu>
@@ -115,15 +131,13 @@ const handleScroll = () => {
                   href={item.href}
                   onClick={(e) => handleClick(item.href, e)}
                   aria-current={active ? "page" : undefined}
-                  className={`relative ml-4 md:ml-0 w-20 text-center transition-all text-sm tracking-wide py-1 ${
-                    active ? "font-bold" : "text-gray-700 dark:text-gray-400 hover:font-bold hover:text-black dark:hover:text-foreground"
-                  }`}
+                  className={`relative ml-4 md:ml-0 w-20 text-center transition-all text-sm tracking-wide py-1 ${active ? "font-bold" : "text-gray-700 dark:text-gray-400 hover:font-bold hover:text-black dark:hover:text-foreground"
+                    }`}
                 >
                   {item.name}
                   <span
-                    className={`absolute left-0 right-0 bottom-0 h-[2px] bg-primary transition-transform duration-300 ease-out origin-center ${
-                      active ? "scale-x-100 group-hover:scale-x-100" : "scale-x-0 "
-                    }`}
+                    className={`absolute left-0 right-0 bottom-0 h-[2px] bg-foreground transition-transform duration-300 ease-out origin-center ${active ? "scale-x-10 group-hover:scale-x-10 scale-y-150" : "scale-x-0 "
+                      }`}
                   />
                 </a>
               </NavigationMenuLink>

@@ -17,12 +17,6 @@ export default function Projects() {
     getProjects().then(setProjects).catch(console.error);
   }, []);
 
-//   if (!projects.length)
-//     return (
-//       <div className="flex justify-center items-center h-40 text-purple-400 font-semibold">
-//         Loading Projects...
-//       </div>
-//     );
 
   const featuredProjects = projects.slice(0, 3);
 

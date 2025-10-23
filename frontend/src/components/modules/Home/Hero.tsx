@@ -16,7 +16,7 @@ export default function HeroSection() {
         <motion.h1
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 1, }}
           className="text-2xl font-bold pt-[5vh] mb-8"
         >
           <p className="text-4xl md:text-5xl xl:text-6xl font-bold">
