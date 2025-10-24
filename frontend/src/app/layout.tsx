@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Titillium_Web } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { Toaster } from "react-hot-toast";
 import "react-photo-view/dist/react-photo-view.css";
+import AuthProvider from "@/providers/AuthProvider";
 
 
 
@@ -31,8 +32,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Toaster />
+            <AuthProvider>
+              <Toaster position="top-center" />
              {children}
+            </AuthProvider>
           </ThemeProvider>
         
       </body>
