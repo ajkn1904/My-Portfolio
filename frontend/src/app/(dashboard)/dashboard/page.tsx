@@ -6,7 +6,7 @@ export default async function DashboardHome() {
   //const session = await getServerSession(authOptions)
   const session = await getUserSession()
 
-
+console.log("SESSION:", session);
 
 
   return (
