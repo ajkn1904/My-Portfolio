@@ -1,14 +1,47 @@
 import { Request, Response } from "express";
 import { BlogService } from "./blog.service";
+import { Blog } from "../../../generated/prisma";
+import { prisma } from "../../../config/db";
+import sendResponse from "../../utils/sendResponse";
 
 const createBlog = async (req: Request, res: Response) => {
-    try {
-        const result = await BlogService.createBlog(req.body)
-        res.status(201).json(result);
-    } catch (error) {
-        res.status(500).send(error)
-    }
-}
+  try {
+    const parsedData = typeof req.body.data === "string" ? JSON.parse(req.body.data) : req.body;
+
+    //console.log("Uploaded file info:", req.file);
+
+    const thumbnail = req.file?.path || parsedData.thumbnail || null;
+
+    const result = await prisma.blog.create({
+      data: {
+        title: parsedData.title,
+        content: parsedData.content,
+        thumbnail,
+        tags: parsedData.tags || [],
+        isFeatured: parsedData.isFeatured ?? false,
+      },
+    });
+
+    sendResponse(res, {
+      statusCode: 201,
+      success: true,
+      message: "Blog created successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error creating blog:", error);
+    sendResponse(res, {
+      statusCode: 500,
+      success: false,
+      message: "Failed to create blog",
+      data: (error as any).message,
+    });
+  }
+};
+
+
+
+
 
 const getAllBlogs = async (req: Request, res: Response) => {
     try {
@@ -20,26 +53,75 @@ const getAllBlogs = async (req: Request, res: Response) => {
         const tags = req.query.tags ? (req.query.tags as string).split(",") : [];
 
         const result = await BlogService.getAllBlogs({page, limit, search, isFeatured, tags});
-        res.json(result);
+        
+        sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message:"Blogs Retrieved Successfully!",
+        data: result
+    })
     } catch (err) {
-        res.status(500).json({ error: "Failed to fetch Blogs", details: err });
+        sendResponse(res, {
+        statusCode: 500,
+        success: false,
+        message: "Failed to Retrieve Blogs",
+        data: (err as any).message,
+        })
     }
 };
 
 const getBlogById = async (req: Request, res: Response) => {
     const Blog = await BlogService.getBlogById(Number(req.params.id));
+    
     if (!Blog) return res.status(404).json({ error: "Blog not found" });
-    res.json(Blog);
+    
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message:"Blog Retrieved Successfully!",
+        data: Blog
+    })
 };
 
 const updateBlog = async (req: Request, res: Response) => {
-    const Blog = await BlogService.updateBlog(Number(req.params.id), req.body);
-    res.json(Blog);
+  try {
+   
+    const parsedData =
+      typeof req.body.data === "string" ? JSON.parse(req.body.data) : req.body;
+
+    const payload = {
+      ...parsedData,
+      thumbnail: req.file?.path || parsedData.thumbnail,
+    };
+
+    const updatedBlog = await BlogService.updateBlog(Number(req.params.id), payload);
+
+    sendResponse(res, {
+        statusCode:200,
+        success: true,
+        message: "Blog Updated Successfully!",
+        data: updatedBlog,
+    });
+    } catch (error) {
+        sendResponse(res, {
+        statusCode: 500,
+        success: false,
+        message: "Failed to Update Blog.",
+        data: (error as any).message,
+        })
+    }
 };
 
+
 const deleteBlog = async (req: Request, res: Response) => {
-    await BlogService.deleteBlog(Number(req.params.id));
-    res.json({ message: "Blog deleted" });
+    const result = await BlogService.deleteBlog(Number(req.params.id));
+    
+    sendResponse(res, {
+        statusCode: 201,
+        success: true,
+        message:"Blog Deleted Successfully!",
+        data: null
+    })
 };
 
 

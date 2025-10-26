@@ -7,7 +7,7 @@ import { NavigationSheet } from "./navigation-sheet";
 
 const Navbar = () => {
   return (
-    <nav className="fixed md:left-0 top-0 h-[50px] md:h-screen w-full md:w-[90px] bg-accent flex md:flex-col items-center justify-between py-8 shadow-sm z-30">
+    <nav className="fixed md:left-0 top-0 h-[50px] md:h-screen w-full md:w-[95px] bg-accent flex md:flex-col items-center justify-between py-8 shadow-sm z-30">
       <div className="flex flex-col items-center">
         <Link href="/" className="flex justify-center items-center mx-5 md:mb-8">
           <Logo />
