@@ -4,8 +4,9 @@ import ProjectImageGallery from "@/components/services/ProjectImageGallery";
 import { Project } from "@/components/types";
 
 
-export default async function ProjectDetailsPage({ params }: { params: { projectId: string } }) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/projects/${params.projectId}`);
+export default async function ProjectDetailsPage({ params }: { params: Promise<{ projectId: string }> }) {
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/projects/${(await params).projectId}`);
     const data = await res.json();
     const project: Project = data?.data;
 
