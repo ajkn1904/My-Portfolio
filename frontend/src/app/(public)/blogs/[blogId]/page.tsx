@@ -17,9 +17,9 @@ export const generateStaticParams = async () => {
 export default async function BlogDetailPage({
   params,
 }: {
-  params: { blogId: string };
+  params: Promise<{ blogId: string }>;
 }) {
-  const { blogId } = await params;
+  const { blogId } = await params; 
   const blog = await getBlogById(blogId);
    
 
