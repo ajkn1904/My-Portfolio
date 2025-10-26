@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from "lucide-react"
 
 
 import { Button } from "@/components/ui/button"
 import { useEffect, type Dispatch } from "react";
 import { FileMetadata, useFileUpload } from "../hooks/use-file-upload";
+import Image from "next/image";
 
 export default function MultipleImageUploader({onChange}: {onChange: Dispatch<React.SetStateAction<[] | (File | FileMetadata)[]>>;}) {
   const maxSizeMB = 5;
@@ -27,6 +29,7 @@ export default function MultipleImageUploader({onChange}: {onChange: Dispatch<Re
     multiple: true,
     maxFiles,
   });
+  
 
   useEffect(() => {
     if (files.length > 0) {
@@ -81,11 +84,13 @@ export default function MultipleImageUploader({onChange}: {onChange: Dispatch<Re
                   key={file.id}
                   className="bg-accent relative aspect-square rounded-md"
                 >
-                  <img
-                    src={file.preview}
-                    alt={file.file.name}
-                    className="size-full rounded-[inherit] object-cover"
-                  />
+                  {file.preview && (
+                    <Image
+                      src={file.preview}
+                      alt={file.file.name}
+                      className="size-full rounded-[inherit] object-cover"
+                    />
+                  )}
                   <Button
                     onClick={() => removeFile(file.id)}
                     size="icon"

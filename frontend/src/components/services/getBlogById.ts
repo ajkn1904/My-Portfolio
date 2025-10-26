@@ -5,5 +5,6 @@ export const getBlogById = async (blogId: string) => {
         tags: ["blogs"] 
     }
   });
-  return await res.json();
+  const blogData =  await res.json();
+  return blogData.data
 };

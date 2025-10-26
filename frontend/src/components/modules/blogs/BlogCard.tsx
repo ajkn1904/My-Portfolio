@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { EyeIcon } from "lucide-react";
 
 export default function BlogCard({ blogs }: { blogs: any[] }) {
+  // console.log(blogs);
   if (!blogs.length)
     return (
       <div className="flex justify-center items-center min-h-[60vh]">

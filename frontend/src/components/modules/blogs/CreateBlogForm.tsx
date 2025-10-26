@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function CreateBlogForm() {
   const router = useRouter();
@@ -73,7 +78,7 @@ export default function CreateBlogForm() {
       {error && <p className="text-red-500">{error}</p>}
 
       {/* Title */}
-      <input
+      <Input
         type="text"
         placeholder="Title"
         value={title}
@@ -83,7 +88,7 @@ export default function CreateBlogForm() {
       />
 
       {/* Content */}
-      <textarea
+      <Textarea
         placeholder="Content"
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -93,14 +98,14 @@ export default function CreateBlogForm() {
       />
 
       {/* Thumbnail */}
-      <input
+      <Input
         type="file"
         accept="image/*"
         onChange={(e) => e.target.files && setThumbnail(e.target.files[0])}
       />
 
       {/* Tags */}
-      <input
+      <Input
         type="text"
         placeholder="Tags (comma separated)"
         value={tags}
@@ -110,33 +115,33 @@ export default function CreateBlogForm() {
 
       {/* Featured */}
       <div className="flex gap-6">
-        <label className="flex items-center gap-2">
-          <input
+        <Label className="flex items-center gap-2">
+          <Input
             type="radio"
             name="isFeatured"
             checked={isFeatured === true}
             onChange={() => setIsFeatured(true)}
           />
           Featured
-        </label>
-        <label className="flex items-center gap-2">
-          <input
+        </Label>
+        <Label className="flex items-center gap-2">
+          <Input
             type="radio"
             name="isFeatured"
             checked={isFeatured === false}
             onChange={() => setIsFeatured(false)}
           />
           Not Featured
-        </label>
+        </Label>
       </div>
 
-      <button
+      <Button
         type="submit"
         disabled={loading}
         className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
       >
         {loading ? "Creating..." : "Submit"}
-      </button>
+      </Button>
     </form>
   );
 }

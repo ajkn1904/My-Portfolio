@@ -6,5 +6,5 @@ export async function getAllBlogs() {
     },
   });
   const data = await res.json();
-  return data?.data || [];
+  return data?.data?.data || [];
 }
