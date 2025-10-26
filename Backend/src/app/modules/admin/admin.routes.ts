@@ -6,6 +6,7 @@ import { checkAuth } from "../../middlewares/checkAuth";
 
 const router = Router();
 
+router.post("/", checkAuth(Role.admin), AdminController.createAdminInfo);
 router.get("/", AdminController.getAdminInfo);
 router.patch("/", checkAuth(Role.admin), AdminController.updateAdminInfo);
 

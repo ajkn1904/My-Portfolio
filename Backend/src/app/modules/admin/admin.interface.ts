@@ -26,9 +26,8 @@ export interface IAdminInfo {
   stackoverflow: string;
   experiences?: IExperience[] | null;
   skills?: ISkill[] | null;
-  createdAt: Date;
-  updatedAt: Date;
 }
+
 
 
 export interface IAdminInfoUpdatePayload {

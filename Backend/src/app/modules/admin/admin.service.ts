@@ -9,6 +9,20 @@ import {
 } from "./admin.interface";
 import { InputJsonValue } from "@prisma/client/runtime/library";
 
+
+//create admin info
+const createAdminInfo = async (payload: IAdminInfo) => {
+  const adminInfo = await prisma.adminInfo.create({
+    data: {
+      ...payload,
+      experiences: payload.experiences ? (payload.experiences as unknown as InputJsonValue) : undefined,
+      skills: payload.skills ? (payload.skills as unknown as InputJsonValue) : undefined,
+    },
+  });
+
+  return adminInfo;
+};
+
 // Get admin info
 const getAdminInfo = async (): Promise<IAdminInfo> => {
   const adminInfo = await prisma.adminInfo.findUnique({
@@ -71,6 +85,7 @@ const updateAdminInfo = async (
 };
 
 export const AdminService = {
+  createAdminInfo,
   getAdminInfo,
   updateAdminInfo,
 };

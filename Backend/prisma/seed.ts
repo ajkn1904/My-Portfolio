@@ -2,6 +2,8 @@ import { prisma } from "../src/config/db";
 
 import bcrypt from "bcryptjs";
 
+//to seed the data to cloud: npx ts-node prisma/seed.ts
+
 
 
 async function main() {
