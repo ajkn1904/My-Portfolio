@@ -6,13 +6,24 @@ import { TErrorSources } from "../interfaces/error.interface";
 import { handleDuplicateError } from "../utils/errorHelpers/handleDuplicateError";
 import { handleZodError } from "../utils/errorHelpers/handleZodError";
 import { envVars } from "../../config/env";
+import { deleteImageFromCloudinary } from "../../config/cloudinary.config";
 
-export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const globalErrorHandler = async (err: any, req: Request, res: Response, next: NextFunction) => {
 
   if(envVars.NODE_ENV === "development"){
     console.log(err);
   }
+  
+  
+  if(req.file){
+    await deleteImageFromCloudinary(req.file.path)
+  }
+  if(req.files && Array.isArray(req.files) && req.files.length){
+    const imageUrls = (req.files as Express.Multer.File[]).map(file => file.path)
 
+    await Promise.all(imageUrls.map(url => deleteImageFromCloudinary(url)))
+
+  }
 
   let errorSources : TErrorSources[] = [];
   let statusCode = err.statusCode || 500;

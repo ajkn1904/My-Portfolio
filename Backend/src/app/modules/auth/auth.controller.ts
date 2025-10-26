@@ -9,6 +9,7 @@ import sendResponse from "../../utils/sendResponse";
 import { createUserTokens } from "../../utils/userTokens";
 import { prisma } from "../../../config/db";
 import { AuthService } from "./auth.service";
+import bcrypt from "bcryptjs";
 
 
 const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -33,35 +34,42 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: N
 });
 
 
-const credentialsLogin = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const email = req.body.email;
-    const user = await prisma.user.findUnique({
-        where: {
-            email
-        }
-    });
-    if(!user){
-      return next(new AppError(StatusCodes.NOT_FOUND, "User Not found"))
-    };
+export const credentialsLogin = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
 
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      return next(new AppError(StatusCodes.NOT_FOUND, "User not found"));
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return next(new AppError(StatusCodes.UNAUTHORIZED, "Invalid password"));
+    }
 
     const userToken = await createUserTokens(user);
+
     setAuthCookie(res, userToken);
 
-    const { password, ...rest } = user;
+    const { password: _, ...rest } = user;
+
     
     sendResponse(res, {
       statusCode: StatusCodes.OK,
       success: true,
-      message: "Logged in Successfully",
+      message: "Logged in successfully",
       data: {
-        accessToken : userToken.accessToken,
+        accessToken: userToken.accessToken,
         refreshToken: userToken.refreshToken,
-        user: rest
+        user: rest,
       },
     });
-  
-});
+  }
+);
 
 
 

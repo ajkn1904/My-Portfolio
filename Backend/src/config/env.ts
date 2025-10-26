@@ -14,11 +14,14 @@ interface EnvConfig {
   FRONTEND_URL: string,
   ADMIN_EMAIL: string,
   ADMIN_PASSWORD: string,
-  EXPRESS_SESSION_SECRET: string
+  EXPRESS_SESSION_SECRET: string,
+  CLOUDINARY_CLOUD_NAME: string,
+  CLOUDINARY_API_KEY: string,
+  CLOUDINARY_API_SECRET: string,
 }
 
 const loadEnvVars = (): EnvConfig => {
-  const requiredEnvVars: string[] = ["PORT", "DATABASE_URL", "NODE_ENV","JWT_ACCESS_SECRET", "JWT_ACCESS_EXPIRES","JWT_REFRESH_SECRET", "JWT_REFRESH_EXPIRES","SALT_ROUND", "FRONTEND_URL", "ADMIN_EMAIL", "ADMIN_PASSWORD", "EXPRESS_SESSION_SECRET"];
+  const requiredEnvVars: string[] = ["PORT", "DATABASE_URL", "NODE_ENV","JWT_ACCESS_SECRET", "JWT_ACCESS_EXPIRES","JWT_REFRESH_SECRET", "JWT_REFRESH_EXPIRES","SALT_ROUND", "FRONTEND_URL", "ADMIN_EMAIL", "ADMIN_PASSWORD", "EXPRESS_SESSION_SECRET", "CLOUDINARY_CLOUD_NAME","CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"];
 
 
 requiredEnvVars.forEach((key) => {
@@ -41,6 +44,9 @@ requiredEnvVars.forEach((key) => {
     ADMIN_EMAIL: process.env.ADMIN_EMAIL as string,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD as string,
     EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string, 
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
     
     };
 };
