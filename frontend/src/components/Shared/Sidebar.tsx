@@ -11,7 +11,7 @@ export default function Sidebar() {
   const session = useSession()
 
   return (
-    <aside className="flex h-screen w-64 flex-col border-r bg-purple-800 text-white">
+    <aside className="flex h-screen w-64 flex-col border-r bg-black text-white">
       {/* Top navigation */}
       <nav className="flex-1 space-y-2 p-4">
         <Link

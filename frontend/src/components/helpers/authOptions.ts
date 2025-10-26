@@ -1,3 +1,4 @@
+import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 
@@ -7,82 +8,92 @@ declare module "next-auth" {
       id: string;
       name?: string | null;
       email?: string | null;
-      role?: string | null;
-      accessToken?: string | null;
+      image?: string | null;
     };
   }
-
   interface User {
     id: string;
     name?: string | null;
     email?: string | null;
-    role?: string | null;
-    accessToken?: string | null;
+    image?: string | null;
   }
 }
 
 export const authOptions: NextAuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
     CredentialsProvider({
       name: "Credentials",
+
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password)
-          throw new Error("Email and password are required");
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(credentials),
-        });
-
-        const result = await res.json();
-        if (!res.ok || !result?.success) {
-          throw new Error(result?.message || "Login failed");
+        if (!credentials?.email || !credentials.password) {
+          console.error("Email or Password is missing");
+          return null;
         }
 
+        try {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API}/auth/login`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: credentials.email,
+                password: credentials.password,
+              }),
+            }
+          );
+          console.log("Response From Backend:", res);
+          if (!res?.ok) {
+            console.error("Login Failed", await res.text());
+            return null;
+          }
 
-        return {
-  id: String(result.data.user.id),
-  name: result.data.user.name,
-  email: result.data.user.email,
-  role: result.data.user.role,
-  accessToken: result.data.accessToken, 
-};
+          const data = await res.json();
+          const user = data?.data?.user;
 
+          if (user?.id) {
+            return {
+              id: String(user.id),
+              name: user.name,
+              email: user.email,
+            };
+      
+          } else {
+            return null;
+          }
+        } catch (err) {
+          console.error(err);
+          return null;
+        }
       },
     }),
   ],
-
-  session: {
-    strategy: "jwt",
-  },
-
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.role = user.role;
-        token.accessToken = user.accessToken; // ✅ Keep accessToken
+        token.id = user?.id;
       }
       return token;
     },
-
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
-        session.user.accessToken = token.accessToken as string; // ✅ Include token in session
+      if (session?.user) {
+        session.user.id = token?.id as string;
       }
       return session;
     },
   },
-
+  secret: process.env.AUTH_SECRET,
   pages: {
     signIn: "/login",
   },
-  secret: process.env.AUTH_SECRET,
 };

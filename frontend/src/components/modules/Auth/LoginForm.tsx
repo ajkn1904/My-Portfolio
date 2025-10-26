@@ -1,80 +1,81 @@
 "use client";
 
-import React, { useState } from "react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Password from "@/components/ui/Password";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
-import { motion } from "framer-motion";
-import { signIn } from "next-auth/react";
 import { Loader2, LogIn } from "lucide-react";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-
-
-
-
-const loginSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email" }),
-  password: z.string().min(1, { message: "Password cannot be empty" }),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { motion } from "framer-motion";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import Password from "@/components/ui/Password";
 
 export default function LoginForm() {
-  const [focus, setFocus] = useState<{ [key: string]: boolean }>({});
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<FieldValues>({
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = async (values: LoginFormValues) => {
+  const [focus, setFocus] = useState({ email: false, password: false });
+  const [isValid, setIsValid] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const values = form.watch();
+
+  useEffect(() => {
+    const { email, password } = values;
+    setIsValid(
+      /\S+@\S+\.\S+/.test(email) && password.trim().length >= 4
+    );
+  }, [values]);
+
+  const handleFocus = (field: "email" | "password") =>
+    setFocus((prev) => ({ ...prev, [field]: true }));
+
+  const handleBlur = (field: "email" | "password") =>
+    setFocus((prev) => ({ ...prev, [field]: false }));
+
+const getLabelClass = (field: "email" | "password") =>
+  `absolute left-3 rounded p-1 text-xl transition-all pointer-events-none
+    ${
+      focus[field] || String(values[field] ?? "").length > 0
+        ? "-top-4 text-sm bg-purple-200 dark:bg-purple-900 text-black dark:text-white"
+        : "top-2 text-gray-400"
+    }`;
+
+
+  const onSubmit = async (data: FieldValues) => {
     setLoading(true);
-
-    const res = await signIn("credentials", {
-      ...values,
-      redirect: false,
-    });
-
-    if (res?.error) {
-      if (res.error.includes("User not found")) {
-        form.setError("email", { type: "server", message: "User not found" });
-      } else if (res.error.includes("Incorrect password")) {
-        form.setError("password", { type: "server", message: "Incorrect password" });
-      } else {
-        form.setError("password", { type: "server", message: res.error });
-      }
-    } else if (res?.ok) {
-      toast.success("Login Successful.")
-      router.push("/dashboard");
+    try {
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: true,
+        callbackUrl: "/dashboard",
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
-  const getLabelClass = (field: string, value: string) =>
-    `absolute left-3 rounded px-1 text-xl transition-all
-     ${focus[field] || value.length > 0
-       ? "-top-4 text-sm bg-purple-200 dark:bg-purple-900 text-black dark:text-white"
-       : "top-2 text-gray-400"
-     } pointer-events-none`;
-
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900 px-4">
-      <div className="max-w-md w-full bg-gradient-to-r from-purple-500/5 to-indigo-500/5 dark:from-purple-500/20 dark:to-indigo-500/20 backdrop-blur-md p-8 rounded-2xl shadow-xl">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-            <h2 className="text-3xl font-bold text-center text-purple-600 dark:text-purple-400">
-              Login
-            </h2>
+    <section className="flex justify-center items-center min-h-screen px-4">
+      <div className="w-full max-w-md bg-gradient-to-r from-purple-500/5 to-indigo-500/5 
+        dark:from-purple-500/20 dark:to-indigo-500/20 backdrop-blur-md rounded-2xl 
+        shadow-xl p-8 md:p-10">
+        
+        <h2 className="text-3xl font-bold text-center text-purple-600 mb-8">Login</h2>
 
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 relative">
             {/* Email */}
             <FormField
               control={form.control}
@@ -83,16 +84,16 @@ export default function LoginForm() {
                 <FormItem className="relative">
                   <FormControl>
                     <Input
-                      id="email"
                       type="email"
-                      placeholder=""
                       {...field}
+                      onFocus={() => handleFocus("email")}
+                      onBlur={() => handleBlur("email")}
                       className="w-full h-[50px] border-purple-400 dark:border-purple-700 bg-transparent focus:border-purple-500 focus:ring-0"
-                      onFocus={() => setFocus(prev => ({ ...prev, email: true }))}
-                      onBlur={() => setFocus(prev => ({ ...prev, email: false }))}
+                      placeholder=""
+                      required
                     />
                   </FormControl>
-                  <Label htmlFor="email" className={getLabelClass("email", field.value)}>
+                  <Label htmlFor="email" className={getLabelClass("email")}>
                     Email
                   </Label>
                   <FormMessage />
@@ -108,15 +109,15 @@ export default function LoginForm() {
                 <FormItem className="relative">
                   <FormControl>
                     <Password
-                      id="password"
-                      placeholder=""
                       {...field}
+                      onFocus={() => handleFocus("password")}
+                      onBlur={() => handleBlur("password")}
                       className="w-full h-[50px] border-purple-400 dark:border-purple-700 bg-transparent focus:border-purple-500 focus:ring-0"
-                      onFocus={() => setFocus(prev => ({ ...prev, password: true }))}
-                      onBlur={() => setFocus(prev => ({ ...prev, password: false }))}
+                      placeholder=""
+                      required
                     />
                   </FormControl>
-                  <Label htmlFor="password" className={getLabelClass("password", field.value)}>
+                  <Label htmlFor="password" className={getLabelClass("password")}>
                     Password
                   </Label>
                   <FormMessage />
@@ -124,22 +125,27 @@ export default function LoginForm() {
               )}
             />
 
-            {/* Submit Button */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div whileHover={{ scale: isValid ? 1.05 : 1 }} whileTap={{ scale: 0.95 }}>
               <Button
                 type="submit"
-                disabled={loading}
-                className="w-full h-12 flex items-center justify-center gap-2 font-semibold rounded-xl shadow-lg transition-all
-                bg-gradient-to-r from-purple-500 to-indigo-500
-                hover:from-indigo-500 hover:to-purple-500
-                shadow-purple-400/50 hover:shadow-purple-500/60 text-white"
+                disabled={!isValid || loading}
+                className={`w-full h-10 flex items-center justify-center gap-2 font-semibold py-2 rounded-lg shadow-lg transition-all
+                  ${
+                    isValid && !loading
+                      ? "bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500"
+                      : "bg-purple-600 cursor-not-allowed"
+                  }`}
               >
                 {loading ? (
-                  <Loader2 className="h-5 w-5 animate-spin text-white" />
+                  <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
                   <>
-                    <LogIn className="h-5 w-5 text-white animate-pulse" />
-                    Login
+                    <LogIn
+                      className={`h-5 w-5 transition-all ${
+                        isValid ? "text-white drop-shadow-glow animate-pulse" : "text-gray-400"
+                      }`}
+                    />
+                    Sign In
                   </>
                 )}
               </Button>
@@ -147,6 +153,6 @@ export default function LoginForm() {
           </form>
         </Form>
       </div>
-    </div>
+    </section>
   );
 }
