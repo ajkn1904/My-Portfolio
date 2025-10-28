@@ -33,26 +33,27 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials.password)
           throw new Error("Email and password are required");
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(credentials),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_API}/auth/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(credentials),
+          }
+        );
 
         const result = await res.json();
         if (!res.ok || !result?.success) {
           throw new Error(result?.message || "Login failed");
         }
 
-
         return {
-  id: String(result.data.user.id),
-  name: result.data.user.name,
-  email: result.data.user.email,
-  role: result.data.user.role,
-  accessToken: result.data.accessToken, 
-};
-
+          id: String(result.data.user.id),
+          name: result.data.user.name,
+          email: result.data.user.email,
+          role: result.data.user.role,
+          accessToken: result.data.accessToken,
+        };
       },
     }),
   ],
@@ -66,7 +67,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
-        token.accessToken = user.accessToken; // ✅ Keep accessToken
+        token.accessToken = user.accessToken; // 
       }
       return token;
     },
@@ -75,7 +76,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
-        session.user.accessToken = token.accessToken as string; // ✅ Include token in session
+        session.user.accessToken = token.accessToken as string; 
       }
       return session;
     },
@@ -84,5 +85,5 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
   },
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 };

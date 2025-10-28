@@ -30,11 +30,11 @@ export default function HeroSection() {
           transition={{ duration: 1.2 }}
         >
           <p className="text-xl font-semibold">
-            A{" "}
+            I&apos;m A{" "}
             <Typewriter
               loop
               cursor
-              cursorStyle="."
+              cursorStyle="|"
               typeSpeed={50}
               deleteSpeed={50}
               delaySpeed={1000}

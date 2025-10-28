@@ -71,7 +71,7 @@ export default function CreateBlogForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg space-y-4 w-full"
+      className="max-w-4xl mx-auto p-6 shadow-md shadow-primary rounded-lg space-y-4 w-full"
     >
       <h2 className="text-xl font-semibold mb-4">Create Blog</h2>
 
@@ -122,7 +122,7 @@ export default function CreateBlogForm() {
             checked={isFeatured === true}
             onChange={() => setIsFeatured(true)}
           />
-          Featured
+          YES
         </Label>
         <Label className="flex items-center gap-2">
           <Input
@@ -131,7 +131,7 @@ export default function CreateBlogForm() {
             checked={isFeatured === false}
             onChange={() => setIsFeatured(false)}
           />
-          Not Featured
+          NO
         </Label>
       </div>
 

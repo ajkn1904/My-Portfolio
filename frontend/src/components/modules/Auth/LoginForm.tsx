@@ -30,9 +30,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     const { email, password } = values;
-    setIsValid(
-      /\S+@\S+\.\S+/.test(email) && password.trim().length >= 4
-    );
+    setIsValid(/\S+@\S+\.\S+/.test(email) && password.trim().length >= 6);
   }, [values]);
 
   const handleFocus = (field: "email" | "password") =>
@@ -41,26 +39,36 @@ export default function LoginForm() {
   const handleBlur = (field: "email" | "password") =>
     setFocus((prev) => ({ ...prev, [field]: false }));
 
-const getLabelClass = (field: "email" | "password") =>
-  `absolute left-3 rounded p-1 text-xl transition-all pointer-events-none
+  const getLabelClass = (field: "email" | "password") =>
+    `absolute left-3 rounded p-1 text-xl transition-all pointer-events-none
     ${
       focus[field] || String(values[field] ?? "").length > 0
         ? "-top-4 text-sm bg-purple-200 dark:bg-purple-900 text-black dark:text-white"
         : "top-2 text-gray-400"
     }`;
 
-
   const onSubmit = async (data: FieldValues) => {
     setLoading(true);
     try {
-      await signIn("credentials", {
+      const res = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        redirect: true,
+        redirect: false, 
         callbackUrl: "/dashboard",
       });
+
+      if (res?.error) {
+        form.setError("password", {
+          message: "Invalid email or password. Please try again.",
+        });
+      } else if (res?.ok && res.url) {
+        window.location.href = res.url;
+      }
     } catch (err) {
-      console.error(err);
+      console.error("Sign-in error:", err);
+      form.setError("password", {
+        message: "Something went wrong. Please try again later.",
+      });
     } finally {
       setLoading(false);
     }
@@ -68,14 +76,25 @@ const getLabelClass = (field: "email" | "password") =>
 
   return (
     <section className="flex justify-center items-center min-h-screen px-4">
-      <div className="w-full max-w-md bg-gradient-to-r from-purple-500/5 to-indigo-500/5 
+      <div
+        className="w-full max-w-md bg-gradient-to-r from-purple-500/5 to-indigo-500/5 
         dark:from-purple-500/20 dark:to-indigo-500/20 backdrop-blur-md rounded-2xl 
-        shadow-xl p-8 md:p-10">
-        
-        <h2 className="text-3xl font-bold text-center text-purple-600 mb-8">Login</h2>
+        shadow-xl shadow-primary p-8 md:p-10"
+      >
+        <h2 className="text-3xl font-bold text-center text-purple-600 mb-8">
+          Owner Login
+        </h2>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 relative">
+          <motion.form
+            key={form.formState.errors.password ? "error" : "normal"}
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 relative"
+            animate={form.formState.errors.password ? { x: [-10, 10, -6, 6, 0] } : {}}
+            transition={{ duration: 0.3 }}
+          >
+  
+
             {/* Email */}
             <FormField
               control={form.control}
@@ -117,7 +136,10 @@ const getLabelClass = (field: "email" | "password") =>
                       required
                     />
                   </FormControl>
-                  <Label htmlFor="password" className={getLabelClass("password")}>
+                  <Label
+                    htmlFor="password"
+                    className={getLabelClass("password")}
+                  >
                     Password
                   </Label>
                   <FormMessage />
@@ -125,7 +147,11 @@ const getLabelClass = (field: "email" | "password") =>
               )}
             />
 
-            <motion.div whileHover={{ scale: isValid ? 1.05 : 1 }} whileTap={{ scale: 0.95 }}>
+            {/* Submit Button */}
+            <motion.div
+              whileHover={{ scale: isValid ? 1.05 : 1 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Button
                 type="submit"
                 disabled={!isValid || loading}
@@ -142,7 +168,9 @@ const getLabelClass = (field: "email" | "password") =>
                   <>
                     <LogIn
                       className={`h-5 w-5 transition-all ${
-                        isValid ? "text-white drop-shadow-glow animate-pulse" : "text-gray-400"
+                        isValid
+                          ? "text-white drop-shadow-glow animate-pulse"
+                          : "text-gray-400"
                       }`}
                     />
                     Sign In
@@ -150,7 +178,7 @@ const getLabelClass = (field: "email" | "password") =>
                 )}
               </Button>
             </motion.div>
-          </form>
+          </motion.form>
         </Form>
       </div>
     </section>

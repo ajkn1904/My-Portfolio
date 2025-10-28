@@ -30,7 +30,7 @@ export const NavMenu = ({ className, onLinkClick }: NavMenuProps) => {
   const pathname = usePathname();
   const [activeSection, setActiveSection] = useState<string>("home");
   const isScrollingRef = useRef(false);
-  const { data: session } = useSession(); // ✅ detect logged-in user
+  const { data: session } = useSession(); 
 
   // Determine menu items based on auth status
   const menuItems = session
@@ -150,7 +150,7 @@ export const NavMenu = ({ className, onLinkClick }: NavMenuProps) => {
           );
         })}
 
-        {/* ✅ Logout button (optional, visible if logged in) */}
+ 
         {session && (
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
